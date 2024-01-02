@@ -1,7 +1,9 @@
 import { useState } from 'react'
 import './App.css'
-import MoviesListBox from './components/ListBox';
-import WatchedMoviesListBox from './components/ListBox';
+import ListBox from './components/ListBox';
+
+const MoviesListBox = ListBox;
+const WatchedMoviesListBox = ListBox;
 
 const tempMovieData = [
   {

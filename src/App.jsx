@@ -105,13 +105,13 @@ function Search() {
 function Main() {
   return (
     <main className="main">
-      <ListBox />
-      <WatchedBox />
+      <MoviesListBox />
+      <WatchedMoviesListBox />
     </main>
   );
 }
 
-function WatchedBox() {
+function WatchedMoviesListBox() {
   const [watched, setWatched] = useState(tempWatchedData);
   const [isOpen2, setIsOpen2] = useState(true);
 
@@ -126,8 +126,8 @@ function WatchedBox() {
       </button>
       {isOpen2 && (
         <>
-          <WatchSummary watched={watched} />
-          <WatchMoviesList watched={watched} />
+          <WatchedMovieSummary watched={watched} />
+          <WatchedMoviesList watched={watched} />
         </>
       )}
     </div>
@@ -135,17 +135,17 @@ function WatchedBox() {
   );
 }
 
-function WatchMoviesList({ watched }) {
+function WatchedMoviesList({ watched }) {
   return (
     <ul className="list">
-      {watched.map((movie) => <WatchedMovie movie={movie} />)}
+      {watched.map((movie) => <WatchedMovie movie={movie} key={movie.imdbID} />)}
     </ul>
   );
 }
 
 function WatchedMovie({ movie }) {
   return (
-    <li key={movie.imdbID}>
+    <li>
       <img src={movie.Poster} alt={`${movie.Title} poster`} />
       <h3>{movie.Title}</h3>
       <div>
@@ -166,7 +166,7 @@ function WatchedMovie({ movie }) {
   );
 }
 
-function WatchSummary({ watched }) {
+function WatchedMovieSummary({ watched }) {
   const avgImdbRating = average(watched.map((movie) => movie.imdbRating));
   const avgUserRating = average(watched.map((movie) => movie.userRating));
   const avgRuntime = average(watched.map((movie) => movie.runtime));
@@ -196,7 +196,7 @@ function WatchSummary({ watched }) {
   );
 }
 
-function ListBox() {
+function MoviesListBox() {
   const [isOpen1, setIsOpen1] = useState(true);
 
   return (
@@ -207,12 +207,12 @@ function ListBox() {
       >
         {isOpen1 ? "–" : "+"}
       </button>
-      {isOpen1 && <MovieList />}
+      {isOpen1 && <MoviesList />}
     </div>
   );
 }
 
-function MovieList() {
+function MoviesList() {
   const [movies, setMovies] = useState(tempMovieData);
   return (
     <ul className="list">

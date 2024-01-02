@@ -1,5 +1,7 @@
 import { useState } from 'react'
 import './App.css'
+import MoviesListBox from './components/ListBox';
+import WatchedMoviesListBox from './components/ListBox';
 
 const tempMovieData = [
   {
@@ -53,6 +55,8 @@ const average = (arr) =>
 
 export default function App() {
   const [movies, setMovies] = useState(tempMovieData);
+  const [watched, setWatched] = useState(tempWatchedData);
+
 
   return (
     <>
@@ -61,11 +65,15 @@ export default function App() {
         <Search />
         <NumResults movies={movies} />
       </NavBar>
+
       <Main>
         <MoviesListBox>
           <MoviesList movies={movies} />
         </MoviesListBox>
-        <WatchedMoviesListBox />
+        <WatchedMoviesListBox>
+          <WatchedMovieSummary watched={watched} />
+          <WatchedMoviesList watched={watched} />
+        </WatchedMoviesListBox>
       </Main>
     </>
   );
@@ -115,30 +123,6 @@ function Main({ children }) {
     <main className="main">
       {children}
     </main>
-  );
-}
-
-function WatchedMoviesListBox() {
-  const [watched, setWatched] = useState(tempWatchedData);
-  const [isOpen2, setIsOpen2] = useState(true);
-
-
-  return (
-    <div className="box">
-      <button
-        className="btn-toggle"
-        onClick={() => setIsOpen2((open) => !open)}
-      >
-        {isOpen2 ? "–" : "+"}
-      </button>
-      {isOpen2 && (
-        <>
-          <WatchedMovieSummary watched={watched} />
-          <WatchedMoviesList watched={watched} />
-        </>
-      )}
-    </div>
-
   );
 }
 
@@ -199,22 +183,6 @@ function WatchedMovieSummary({ watched }) {
           <span>{avgRuntime} min</span>
         </p>
       </div>
-    </div>
-  );
-}
-
-function MoviesListBox({ children }) {
-  const [isOpen1, setIsOpen1] = useState(true);
-
-  return (
-    <div className="box">
-      <button
-        className="btn-toggle"
-        onClick={() => setIsOpen1((open) => !open)}
-      >
-        {isOpen1 ? "–" : "+"}
-      </button>
-      {isOpen1 && children}
     </div>
   );
 }

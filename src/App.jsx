@@ -61,7 +61,12 @@ export default function App() {
         <Search />
         <NumResults movies={movies} />
       </NavBar>
-      <Main movies={movies} />
+      <Main>
+        <MoviesListBox>
+          <MoviesList movies={movies} />
+        </MoviesListBox>
+        <WatchedMoviesListBox />
+      </Main>
     </>
   );
 }
@@ -105,11 +110,10 @@ function Search() {
 
 }
 
-function Main({ movies }) {
+function Main({ children }) {
   return (
     <main className="main">
-      <MoviesListBox movies={movies} />
-      <WatchedMoviesListBox />
+      {children}
     </main>
   );
 }
@@ -199,7 +203,7 @@ function WatchedMovieSummary({ watched }) {
   );
 }
 
-function MoviesListBox({ movies }) {
+function MoviesListBox({ children }) {
   const [isOpen1, setIsOpen1] = useState(true);
 
   return (
@@ -210,7 +214,7 @@ function MoviesListBox({ movies }) {
       >
         {isOpen1 ? "–" : "+"}
       </button>
-      {isOpen1 && <MoviesList movies={movies} />}
+      {isOpen1 && children}
     </div>
   );
 }

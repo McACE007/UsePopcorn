@@ -16,12 +16,13 @@ export default function App() {
   const [watched, setWatched] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
-  let query = 'sladfkjlkasdfj';
+  const [query, setQuery] = useState("");
 
   useEffect(() => {
-    setIsLoading(true);
     async function fetchMovies() {
       try {
+        setIsLoading(true);
+        setError('');
         const response = await fetch(`${baseAPIUrl}&s=${query}`);
 
         if (!response.ok) throw new Error('Something went wrong while fetching the movies');
@@ -37,23 +38,27 @@ export default function App() {
         setIsLoading(false);
       }
     }
+    if (query.length < 3) {
+      setMovies([]);
+      setError('');
+      return;
+    }
     fetchMovies();
-
-  }, []);
+  }, [query]);
 
   return (
     <>
       <NavBar>
         <Logo />
-        <Search />
+        <Search query={query} setQuery={setQuery} />
         <NumResults movies={movies} />
       </NavBar>
 
       <Main>
         <MoviesListBox>
           {isLoading && <Loader />}
-          {!isLoading && !error && <MoviesList movies={movies} />}          }
           {error && <ErrorMessage message={error} />}
+          {!isLoading && !error && <MoviesList movies={movies} />}          }
         </MoviesListBox>
         <WatchedMoviesListBox>
           <WatchedMovieSummary watched={watched} />
@@ -96,16 +101,15 @@ function Logo() {
 }
 
 function NumResults({ movies }) {
+  console.log(movies);
   return (
     <p className="num-results">
-      Found <strong>{movies.length}</strong> results
+      Found <strong>{movies?.length || 0}</strong> results
     </p>
   );
 }
 
-function Search() {
-  const [query, setQuery] = useState("");
-
+function Search({ query, setQuery }) {
   return (
     <input
       className="search"

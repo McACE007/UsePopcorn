@@ -25,14 +25,18 @@ export default function App() {
       try {
         setIsLoading(true);
         setError("");
+
         const response = await fetch(`${baseAPIUrl}&s=${query}`, {
           signal: controller.signal,
         });
 
         if (!response.ok)
           throw new Error("Something went wrong while fetching the movies");
+
         const data = await response.json();
+
         if (data.Response == "False") throw new Error("Movie not found");
+
         setMovies(data.Search);
         setError("");
       } catch (error) {
@@ -43,12 +47,16 @@ export default function App() {
         setIsLoading(false);
       }
     }
+
     if (query.length < 3) {
       setMovies([]);
       setError("");
       return;
     }
+
+    handleCloseMovieDetails();
     fetchMovies();
+
     return () => controller.abort();
   }, [query]);
 
@@ -168,6 +176,17 @@ function MovieDetails({
     document.title = `Movie | ${title}`;
     return () => (document.title = "usePopcorn");
   }, [title]);
+
+  useEffect(() => {
+    function callback(e) {
+      if (e.code === "Escape") {
+        onCloseMovieDetails();
+      }
+    }
+
+    document.addEventListener("keydown", callback);
+    return () => document.removeEventListener("keydown", callback);
+  }, [onCloseMovieDetails]);
 
   function handleAdd() {
     const newMovie = {

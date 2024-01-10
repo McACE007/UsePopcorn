@@ -1,9 +1,12 @@
 import { useEffect, useState, useRef } from "react";
 import "./App.css";
+
 import ListBox from "./components/ListBox";
 import StarRating from "./components/StarRating";
+
 import { useMovies } from "./hooks/useMovies";
 import { useLocalStorageState } from "./hooks/useLocalStorageState";
+import { useKey } from "./hooks/useKey";
 
 const baseAPIUrl = "http://www.omdbapi.com/?apikey=364ec3c5";
 
@@ -138,16 +141,7 @@ function MovieDetails({
     return () => (document.title = "usePopcorn");
   }, [title]);
 
-  useEffect(() => {
-    function callback(e) {
-      if (e.code === "Escape") {
-        onCloseMovieDetails();
-      }
-    }
-
-    document.addEventListener("keydown", callback);
-    return () => document.removeEventListener("keydown", callback);
-  }, [onCloseMovieDetails]);
+  useKey("Escape", onCloseMovieDetails);
 
   function handleAdd() {
     const newMovie = {
@@ -244,18 +238,12 @@ function NumResults({ movies }) {
 
 function Search({ query, setQuery }) {
   const inputElement = useRef(null);
-  useEffect(() => {
-    function callback(e) {
-      if (e.code === "Enter") {
-        if (document.activeElement === inputElement.current) return;
-        inputElement.current.focus();
-        setQuery("");
-      }
-    }
-    document.addEventListener("keydown", callback);
 
-    return () => document.removeEventListener("keydown", callback);
-  }, [setQuery]);
+  useKey("Enter", function () {
+    if (document.activeElement === inputElement.current) return;
+    inputElement.current.focus();
+    setQuery("");
+  });
 
   return (
     <input

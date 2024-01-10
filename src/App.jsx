@@ -3,6 +3,7 @@ import "./App.css";
 import ListBox from "./components/ListBox";
 import StarRating from "./components/StarRating";
 import { useMovies } from "./hooks/useMovies";
+import { useLocalStorageState } from "./hooks/useLocalStorageState";
 
 const baseAPIUrl = "http://www.omdbapi.com/?apikey=364ec3c5";
 
@@ -10,10 +11,6 @@ const average = (arr) =>
   arr.reduce((acc, cur, i, arr) => acc + cur / arr.length, 0);
 
 export default function App() {
-  const [watched, setWatched] = useState(() =>
-    JSON.parse(localStorage.getItem("watchedMovies")),
-  );
-
   const [query, setQuery] = useState("");
   const [selectedId, setSelectedId] = useState(null);
 
@@ -21,6 +18,8 @@ export default function App() {
     query,
     handleCloseMovieDetails,
   );
+
+  const [watched, setWatched] = useLocalStorageState([], "WatchedMovies");
 
   function handleSelectMovie(id) {
     setSelectedId((curID) => (curID === id ? null : id));
@@ -42,10 +41,6 @@ export default function App() {
   function handleRemoveWatched(id) {
     setWatched((watched) => watched.filter((movie) => movie.imdbId !== id));
   }
-
-  useEffect(() => {
-    localStorage.setItem("watchedMovies", JSON.stringify(watched));
-  }, [watched]);
 
   return (
     <>

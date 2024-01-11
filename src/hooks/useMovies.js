@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 
 const APIKey = "364ec3c5";
-const APIUrl = `http://www.omdbapi.com/?apikey=${APIKey}`;
+const APIUrl = `https://www.omdbapi.com/?apikey=${APIKey}`;
 
 export function useMovies(query, callback) {
   const [movies, setMovies] = useState([]);

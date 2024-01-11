@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 
-const APIKey = import.meta.env.VITE_APP_API_KEY;
+const APIKey = "364ec3c5";
 const APIUrl = `http://www.omdbapi.com/?apikey=${APIKey}`;
 
 export function useMovies(query, callback) {

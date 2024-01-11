@@ -6,7 +6,7 @@ import StarRating from "./StarRating";
 
 import { useKey } from "../hooks/useKey";
 
-const baseAPIUrl = "http://www.omdbapi.com/?apikey=364ec3c5";
+const APIUrl = import.meta.env.API_URL_WITH_KEY;
 
 export default function MovieDetails({
   selectedId,
@@ -41,7 +41,7 @@ export default function MovieDetails({
       setIsLoading(true);
       try {
         setError("");
-        const response = await fetch(`${baseAPIUrl}&i=${selectedId}`);
+        const response = await fetch(`${APIUrl}&i=${selectedId}`);
         const data = await response.json();
         if (!response.ok)
           throw new Error("Something went wrong while fetching the movies");

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 
-const baseAPIUrl = "http://www.omdbapi.com/?apikey=364ec3c5";
+const APIUrl = import.meta.env.API_URL_WITH_KEY;
 
 export function useMovies(query, callback) {
   const [movies, setMovies] = useState([]);
@@ -15,7 +15,7 @@ export function useMovies(query, callback) {
         setIsLoading(true);
         setError("");
 
-        const response = await fetch(`${baseAPIUrl}&s=${query}`, {
+        const response = await fetch(`${APIUrl}&s=${query}`, {
           signal: controller.signal,
         });
 

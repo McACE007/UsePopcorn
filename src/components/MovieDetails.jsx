@@ -6,7 +6,8 @@ import StarRating from "./StarRating";
 
 import { useKey } from "../hooks/useKey";
 
-const APIUrl = import.meta.env.API_URL_WITH_KEY;
+const APIKey = import.meta.env.VITE_AP_API_KEY;
+const APIUrl = `http://www.omdbapi.com/?apikey=${APIKey}`;
 
 export default function MovieDetails({
   selectedId,
